@@ -8,6 +8,7 @@
 #endif
 
 #include <stdexcept>
+#include <type_traits>
 
 #include "yaml-cpp/dll.h"
 #include "yaml-cpp/emitterstyle.h"
@@ -64,7 +65,11 @@ class YAML_CPP_API Node {
   // access
   template <typename T>
   const T as() const;
-  template <typename T>
+  template <typename T, typename = std::enable_if_t<
+    std::is_arithmetic<T>::value || 
+    std::is_base_of<std::string,T>::value ||
+    std::is_base_of<char*,T>::value
+  >>
   friend T& operator>>(const Node& node, T& value) { return value = node.as<T>(); }
   template <typename T, typename S>
   const T as(const S& fallback) const;
