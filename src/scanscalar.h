@@ -35,7 +35,7 @@ struct ScanScalarParams {
   RegEx end;          // what condition ends this scalar?
   bool eatEnd;        // should we eat that condition when we see it?
   int indent;         // what level of indentation should be eaten and ignored?
-  bool detectIndent;  // should we try to autodetect the indent?
+  bool detectIndent;  // should we try to shareddetect the indent?
   bool eatLeadingWhitespace;  // should we continue eating this delicious
                               // indentation after 'indent' spaces?
   char escape;  // what character do we escape on (i.e., slash or single quote)

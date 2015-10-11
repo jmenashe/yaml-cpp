@@ -40,8 +40,8 @@ class YAML_CPP_API Parser : private noncopyable {
   void HandleTagDirective(const Token& token);
 
  private:
-  std::auto_ptr<Scanner> m_pScanner;
-  std::auto_ptr<Directives> m_pDirectives;
+  std::shared_ptr<Scanner> m_pScanner;
+  std::shared_ptr<Directives> m_pDirectives;
 };
 }
 

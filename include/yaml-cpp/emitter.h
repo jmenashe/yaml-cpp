@@ -7,7 +7,6 @@
 #pragma once
 #endif
 
-#include <cstddef>
 #include <memory>
 #include <sstream>
 #include <string>
@@ -122,7 +121,7 @@ class YAML_CPP_API Emitter : private noncopyable {
   bool CanEmitNewline() const;
 
  private:
-  std::auto_ptr<EmitterState> m_pState;
+  std::shared_ptr<EmitterState> m_pState;
   ostream_wrapper m_stream;
 };
 

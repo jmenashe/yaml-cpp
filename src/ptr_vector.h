@@ -23,17 +23,15 @@ class ptr_vector : private YAML::noncopyable {
   ~ptr_vector() { clear(); }
 
   void clear() {
-    for (std::size_t i = 0; i < m_data.size(); i++)
-      delete m_data[i];
     m_data.clear();
   }
 
   std::size_t size() const { return m_data.size(); }
   bool empty() const { return m_data.empty(); }
 
-  void push_back(std::auto_ptr<T> t) {
+  void push_back(std::shared_ptr<T> t) {
     m_data.push_back(NULL);
-    m_data.back() = t.release();
+    m_data.back() = t;
   }
   T& operator[](std::size_t i) { return *m_data[i]; }
   const T& operator[](std::size_t i) const { return *m_data[i]; }
@@ -42,7 +40,7 @@ class ptr_vector : private YAML::noncopyable {
   const T& back() const { return *m_data.back(); }
 
  private:
-  std::vector<T*> m_data;
+  std::vector<std::shared_ptr<T>> m_data;
 };
 }
 

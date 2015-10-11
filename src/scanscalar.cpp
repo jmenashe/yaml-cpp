@@ -111,7 +111,7 @@ std::string ScanScalar(Stream& INPUT, ScanScalarParams& params) {
                                    (params.detectIndent && !foundNonEmptyLine)))
       INPUT.eat(1);
 
-    // update indent if we're auto-detecting
+    // update indent if we're shared-detecting
     if (params.detectIndent && !foundNonEmptyLine)
       params.indent = std::max(params.indent, INPUT.column());
 
