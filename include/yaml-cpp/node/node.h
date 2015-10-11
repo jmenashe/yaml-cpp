@@ -71,6 +71,13 @@ class YAML_CPP_API Node {
     std::is_base_of<char*,T>::value
   >>
   friend T& operator>>(const Node& node, T& value) { return value = node.as<T>(); }
+  template <typename T, typename = std::enable_if_t<!(
+    std::is_arithmetic<T>::value || 
+    std::is_base_of<std::string,T>::value ||
+    std::is_base_of<char*,T>::value
+  )>>
+  T cast() const  { T t; *this >> t; return t; }
+
   template <typename T, typename S>
   const T as(const S& fallback) const;
   const std::string& Scalar() const;
