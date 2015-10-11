@@ -65,7 +65,7 @@ class YAML_CPP_API Node {
   template <typename T>
   const T as() const;
   template <typename T>
-  friend T& operator>>(const Node& node, T& value) { value = node.as<T>(); }
+  friend T& operator>>(const Node& node, T& value) { return value = node.as<T>(); }
   template <typename T, typename S>
   const T as(const S& fallback) const;
   const std::string& Scalar() const;

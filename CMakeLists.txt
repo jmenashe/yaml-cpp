@@ -273,6 +273,11 @@ add_library(yaml-cpp ${library_sources})
 set_target_properties(yaml-cpp PROPERTIES
   COMPILE_FLAGS "${yaml_c_flags} ${yaml_cxx_flags}"
 )
+add_library(yaml-cpp-shared SHARED ${library_sources})
+set_target_properties(yaml-cpp-shared PROPERTIES
+  COMPILE_FLAGS "${yaml_c_flags} ${yaml_cxx_flags}"
+)
+set_target_properties(yaml-cpp-shared PROPERTIES OUTPUT_NAME yaml-cpp)
 
 set_target_properties(yaml-cpp PROPERTIES
 	VERSION "${YAML_CPP_VERSION}"
