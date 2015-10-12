@@ -21,7 +21,7 @@ class Stream : private noncopyable {
  public:
   friend class StreamCharSource;
 
-  Stream(std::istream& input);
+  Stream(std::istream& input, bool usePrefetch=true);
   ~Stream();
 
   operator bool() const;
@@ -49,6 +49,7 @@ class Stream : private noncopyable {
   CharacterSet m_charSet;
   mutable std::deque<char> m_readahead;
   unsigned char* const m_pPrefetched;
+  bool m_usePrefetch;
   mutable size_t m_nPrefetchedAvailable;
   mutable size_t m_nPrefetchedUsed;
 

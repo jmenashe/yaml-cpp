@@ -8,11 +8,13 @@
 
 namespace YAML {
 Scanner::Scanner(std::istream& in)
-    : INPUT(in),
+    : INPUT(in, false),
       m_startedStream(false),
       m_endedStream(false),
       m_simpleKeyAllowed(false),
-      m_canBeJSONFlow(false) {}
+      m_canBeJSONFlow(false),
+      m_endedDocument(false)
+  {}
 
 Scanner::~Scanner() {}
 
@@ -105,6 +107,10 @@ void Scanner::ScanNextToken() {
 
   // end of stream
   if (!INPUT)
+    return EndStream();
+
+  // stop parsing if the document is ended
+  if (m_endedDocument)
     return EndStream();
 
   if (INPUT.column() == 0 && INPUT.peek() == Keys::Directive)

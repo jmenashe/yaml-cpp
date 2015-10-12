@@ -129,6 +129,7 @@ class Scanner {
   std::stack<IndentMarker *> m_indents;
   ptr_vector<IndentMarker> m_indentRefs;  // for "garbage collection"
   std::stack<FLOW_MARKER> m_flows;
+  bool m_endedDocument;
 };
 }
 

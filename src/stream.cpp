@@ -190,9 +190,10 @@ inline void QueueUnicodeCodepoint(std::deque<char>& q, unsigned long ch) {
   }
 }
 
-Stream::Stream(std::istream& input)
+Stream::Stream(std::istream& input, bool usePrefetch)
     : m_input(input),
       m_pPrefetched(new unsigned char[YAML_PREFETCH_SIZE]),
+      m_usePrefetch(usePrefetch), 
       m_nPrefetchedAvailable(0),
       m_nPrefetchedUsed(0) {
   typedef std::istream::traits_type char_traits;
@@ -271,6 +272,7 @@ char Stream::get() {
     m_mark.column = 0;
     m_mark.line++;
   }
+  printf("i'm at here: %lu\n", m_input.tellg()); 
 
   return ch;
 }
@@ -302,6 +304,8 @@ void Stream::AdvanceCurrent() {
 }
 
 bool Stream::_ReadAheadTo(size_t i) const {
+  printf("read ahead to %lu\n", i);
+  printf("start of read, i'm at here: %lu\n", m_input.tellg()); 
   while (m_input.good() && (m_readahead.size() <= i)) {
     switch (m_charSet) {
       case utf8:
@@ -326,14 +330,17 @@ bool Stream::_ReadAheadTo(size_t i) const {
   if (!m_input.good())
     m_readahead.push_back(Stream::eof());
 
+  printf("end of read, i'm at here: %lu\n", m_input.tellg()); 
   return m_readahead.size() > i;
 }
 
 void Stream::StreamInUtf8() const {
+  printf("start of stream, i'm at here: %lu\n", m_input.tellg()); 
   unsigned char b = GetNextByte();
   if (m_input.good()) {
     m_readahead.push_back(b);
   }
+  printf("end of stream, i'm at here: %lu\n", m_input.tellg()); 
 }
 
 void Stream::StreamInUtf16() const {
@@ -406,6 +413,10 @@ inline char* ReadBuffer(unsigned char* pBuffer) {
 }
 
 unsigned char Stream::GetNextByte() const {
+  printf("start of get, i'm at here: %lu\n", m_input.tellg());
+  if(!m_usePrefetch) {
+    return m_input.get();
+  }
   if (m_nPrefetchedUsed >= m_nPrefetchedAvailable) {
     std::streambuf* pBuf = m_input.rdbuf();
     m_nPrefetchedAvailable = static_cast<std::size_t>(
@@ -420,6 +431,7 @@ unsigned char Stream::GetNextByte() const {
     }
   }
 
+  printf("end of get, i'm at here: %lu\n", m_input.tellg()); 
   return m_pPrefetched[m_nPrefetchedUsed++];
 }
 

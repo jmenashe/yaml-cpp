@@ -81,6 +81,8 @@ void Scanner::ScanDocEnd() {
   Mark mark = INPUT.mark();
   INPUT.eat(3);
   m_tokens.push(Token(Token::DOC_END, mark));
+  m_endedDocument = true;
+  printf("DOC IS ENDED\n");
 }
 
 // FlowStart
