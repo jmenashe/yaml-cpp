@@ -61,7 +61,7 @@ void EmitterState::SetLongKey() {
 }
 
 void EmitterState::ForceFlow() {
-  assert(!m_groups.empty());
+  //assert(!m_groups.empty());
   if (m_groups.empty())
     return;
 
