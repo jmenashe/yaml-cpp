@@ -68,6 +68,26 @@ class YAML_CPP_API Node {
   T as(const S& fallback) const;
   const std::string& Scalar() const;
 
+  template<typename T>
+  friend void operator>>(const Node node, T& t) {
+    t = node.as<T>();
+  }
+
+  template<typename T>
+  friend void operator>>(const T& t, Node& node) {
+    node = t;
+  }
+  
+  template<typename T>
+  friend void operator<<(Node node, const T& t) {
+    node = t;
+  }
+  
+  template<typename T>
+  friend void operator<<(T& t, const Node& node) {
+    t = node.as<T>();
+  }
+
   const std::string& Tag() const;
   void SetTag(const std::string& tag);
 
